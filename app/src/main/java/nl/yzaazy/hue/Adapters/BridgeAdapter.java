@@ -17,7 +17,7 @@ public class BridgeAdapter extends BaseAdapter {
     LayoutInflater inflater;
     ArrayList<Bridge> bridgeList;
 
-    public BridgeAdapter(Context context, LayoutInflater inflater, ArrayList<Bridge> bridgeList){
+    public BridgeAdapter(Context context, LayoutInflater inflater, ArrayList<Bridge> bridgeList) {
         this.context = context;
         this.inflater = inflater;
         this.bridgeList = bridgeList;
@@ -42,7 +42,7 @@ public class BridgeAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
-        if(view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.bridge_row, null);
 
             viewHolder = new ViewHolder();
@@ -60,7 +60,7 @@ public class BridgeAdapter extends BaseAdapter {
         return view;
     }
 
-    private static class ViewHolder{
+    private static class ViewHolder {
         public TextView name;
         public TextView ip;
     }

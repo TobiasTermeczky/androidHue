@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -161,7 +160,7 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
         startActivity(intent);
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         getHuesWithVolley();
     }
@@ -174,14 +173,14 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
     @Override
-    public void lightOffCallback(){
+    public void lightOffCallback() {
         Boolean allOff = true;
         for (Hue hue : hueList) {
-            if(hue.getOn()){
+            if (hue.getOn()) {
                 allOff = false;
             }
         }
-        if(allOff){
+        if (allOff) {
             allSwitch.setOnCheckedChangeListener(null);
             allSwitch.setChecked(false);
             setAllSwitchListener();
