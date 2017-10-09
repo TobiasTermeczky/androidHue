@@ -1,12 +1,14 @@
 package nl.yzaazy.hue.Models;
 
-public class HueBridge {
+public class Bridge {
     String name;
     String ip;
+    String token;
 
-    public HueBridge(String name, String ip){
+    public Bridge(String name, String ip, String token){
         this.name = name;
         this.ip = ip;
+        this.token = token;
     }
 
     public String getName() {
@@ -15,5 +17,9 @@ public class HueBridge {
 
     public String getIp() {
         return ip;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

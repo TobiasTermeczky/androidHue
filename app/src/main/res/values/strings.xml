@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">hue</string>
+    <string name="app_name">Hue Control</string>
     <string name="name">name</string>
     <string name="ip">ip</string>
 </resources>

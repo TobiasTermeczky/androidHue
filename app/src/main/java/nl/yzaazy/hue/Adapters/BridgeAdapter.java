@@ -9,28 +9,28 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.yzaazy.hue.Models.HueBridge;
+import nl.yzaazy.hue.Models.Bridge;
 import nl.yzaazy.hue.R;
 
-public class HueBridgeAdapter extends BaseAdapter {
+public class BridgeAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
-    ArrayList<HueBridge> mHueBridgeArrayList;
+    ArrayList<Bridge> mBridgeArrayList;
 
-    public HueBridgeAdapter(Context context, LayoutInflater inflater, ArrayList<HueBridge> mHueBridgeArrayList ){
+    public BridgeAdapter(Context context, LayoutInflater inflater, ArrayList<Bridge> mBridgeArrayList){
         this.context = context;
         this.inflater = inflater;
-        this.mHueBridgeArrayList = mHueBridgeArrayList;
+        this.mBridgeArrayList = mBridgeArrayList;
     }
 
     @Override
     public int getCount() {
-        return mHueBridgeArrayList.size();
+        return mBridgeArrayList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mHueBridgeArrayList.get(i);
+        return mBridgeArrayList.get(i);
     }
 
     @Override
@@ -54,9 +54,9 @@ public class HueBridgeAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        HueBridge hueBridge = mHueBridgeArrayList.get(i);
-        viewHolder.name.setText(hueBridge.getName());
-        viewHolder.ip.setText(hueBridge.getIp());
+        Bridge bridge = mBridgeArrayList.get(i);
+        viewHolder.name.setText(bridge.getName());
+        viewHolder.ip.setText(bridge.getIp());
         return view;
     }
 

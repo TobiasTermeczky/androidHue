@@ -7,7 +7,7 @@
     tools:context="nl.yzaazy.hue.MainActivity">
 
     <ListView
-        android:id="@+id/lvHueBridge"
+        android:id="@+id/lvBridge"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
