@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import nl.yzaazy.hue.Helper.VolleyHelper;
+import nl.yzaazy.hue.Interface.HueListCallback;
 import nl.yzaazy.hue.Models.Bridge;
 import nl.yzaazy.hue.Models.Hue;
 import nl.yzaazy.hue.R;
@@ -21,13 +22,15 @@ public class HueAdapter extends BaseAdapter{
     LayoutInflater inflater;
     ArrayList<Hue> hueList;
     Bridge bridge;
+    HueListCallback hueListCallback;
     private VolleyHelper volleyHelper;
 
-    public HueAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Hue> hueList, Bridge bridge){
+    public HueAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Hue> hueList, Bridge bridge, HueListCallback hueListCallback){
         this.context = context;
         this.inflater = layoutInflater;
         this.hueList = hueList;
         this.bridge = bridge;
+        this.hueListCallback = hueListCallback;
         volleyHelper = new VolleyHelper(context);
     }
 
@@ -48,7 +51,7 @@ public class HueAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if(view == null){
             view = inflater.inflate(R.layout.hue_row, null);
@@ -64,13 +67,16 @@ public class HueAdapter extends BaseAdapter{
         final Hue hue = hueList.get(i);
         viewHolder.name.setText(hue.getName());
         viewHolder.onOffSwitch.setChecked(hue.getOn());
+
         viewHolder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
                     volleyHelper.turnOn(bridge, hue);
+                    hueListCallback.lightOnCallback();
                 }else {
                     volleyHelper.turnOff(bridge, hue);
+                    hueListCallback.lightOffCallback();
                 }
             }
         });

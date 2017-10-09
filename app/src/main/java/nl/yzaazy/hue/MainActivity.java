@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d("Selected Bridge: ", i + "");
 
         Intent intent = new Intent(getApplicationContext(), HueActivity.class);
-        Bridge bridge = (Bridge) this.bridgeList.get(i);
+        Bridge bridge = this.bridgeList.get(i);
         intent.putExtra("BridgeName", bridge.getName());
         intent.putExtra("BridgeIp", bridge.getIp());
         intent.putExtra("BridgeToken", bridge.getToken());

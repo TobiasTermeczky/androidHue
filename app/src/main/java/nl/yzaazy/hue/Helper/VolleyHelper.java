@@ -74,13 +74,46 @@ public class VolleyHelper {
         return requestResponse;
     }
 
-    public boolean turnOn(Bridge bridge, Hue hue) {
+    public void turnOn(Bridge bridge, Hue hue) {
         this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"on\":true}", Request.Method.PUT);
-        return true;
+        hue.setOn(true);
     }
 
-    public boolean turnOff(Bridge bridge, Hue hue) {
+    public void turnOff(Bridge bridge, Hue hue) {
         this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"on\":false}", Request.Method.PUT);
-        return true;
+        hue.setOn(false);
+    }
+
+    public void setColorloop(Bridge bridge, Hue hue, boolean b){
+        String effect = "colorloop";
+        if (!b){
+            effect = "none";
+        }
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"effect\":\"" + effect + "\"}", Request.Method.PUT);
+        hue.setEffect(effect);
+    }
+
+    public void setAlert(Bridge bridge, Hue hue, boolean b) {
+        String alert = "lselect";
+        if (!b){
+            alert = "none";
+        }
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"alert\":\"" + alert + "\"}", Request.Method.PUT);
+        hue.setAlert(alert);
+    }
+
+    public void setHue(Bridge bridge, Hue hue, int i) {
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"hue\":\"" + i + "\"}", Request.Method.PUT);
+        hue.setHue(i);
+    }
+
+    public void setSaturation(Bridge bridge, Hue hue, int i) {
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"sat\":\"" + i + "\"}", Request.Method.PUT);
+        hue.setSaturation(i);
+    }
+
+    public void setBrightness(Bridge bridge, Hue hue, int i) {
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"bri\":\"" + i + "\"}", Request.Method.PUT);
+        hue.setHue(i);
     }
 }

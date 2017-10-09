@@ -1,5 +1,6 @@
 package nl.yzaazy.hue;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,15 +27,16 @@ import java.util.Iterator;
 
 import nl.yzaazy.hue.Adapters.HueAdapter;
 import nl.yzaazy.hue.Helper.VolleyHelper;
+import nl.yzaazy.hue.Interface.HueListCallback;
 import nl.yzaazy.hue.Models.Bridge;
 import nl.yzaazy.hue.Models.Hue;
 
-public class HueActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class HueActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, HueListCallback {
 
     ArrayList<Hue> hueList = new ArrayList<>();
     HueAdapter adapter;
     ListView hueListView;
-    Switch hueSwitch;
+    Switch allSwitch, discoSwitch;
     Bridge bridge;
     VolleyHelper volleyHelper;
 
@@ -47,13 +50,34 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
                 extras.getString("BridgeIp"),
                 extras.getString("BridgeToken"));
         Log.d("Bridge: ", bridge.getName());
-        getHueWithVolley();
         hueListView = (ListView) findViewById(R.id.lvHue);
-        hueSwitch = (Switch) findViewById(R.id.allSwitch);
-        hueSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        allSwitch = (Switch) findViewById(R.id.allSwitch);
+        setAllSwitchListener();
+        discoSwitch = (Switch) findViewById(R.id.discoSwitch);
+        discoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // TODO: 9-10-2017 hier zit nog een bug als ie aan is en je zet master aan gaat de lamp uit!
+                for (Hue hue : hueList) {
+                    if (b) {
+                        allSwitch.setChecked(true);
+                        volleyHelper.turnOn(bridge, hue);
+                    }
+                    volleyHelper.setAlert(bridge, hue, b);
+                    volleyHelper.setColorloop(bridge, hue, b);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+        adapter = new HueAdapter(getApplicationContext(), LayoutInflater.from(getApplicationContext()), hueList, bridge, this);
+        hueListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        hueListView.setOnItemClickListener(this);
+    }
+
+    private void setAllSwitchListener() {
+        allSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 for (Hue hue : hueList) {
                     if (b) {
                         volleyHelper.turnOn(bridge, hue);
@@ -64,13 +88,10 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
                 adapter.notifyDataSetChanged();
             }
         });
-        adapter = new HueAdapter(getApplicationContext(), LayoutInflater.from(getApplicationContext()), hueList, bridge);
-        hueListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        hueListView.setOnItemClickListener(this);
     }
 
-    private void getHueWithVolley() {
+    private void getHuesWithVolley() {
+        hueList.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = bridge.getIp() + "/api/" + bridge.getToken() + "/lights/";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -108,8 +129,8 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
             hue.setEffect(jResults.getJSONObject(hue.getId()).getJSONObject("state").getString("effect"));
             hue.setAlert(jResults.getJSONObject(hue.getId()).getJSONObject("state").getString("alert"));
             hueList.add(hue);
-            if(hue.getOn()){
-                hueSwitch.setChecked(true);
+            if (hue.getOn()) {
+                allSwitch.setChecked(true);
             }
             adapter.notifyDataSetChanged();
         }
@@ -119,6 +140,51 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Log.d("Selected Light: ", hueList.get(i).getId());
-        //Put intent here
+        Intent intent = new Intent(getApplicationContext(), HueDetailActivity.class);
+        Hue hue = this.hueList.get(i);
+
+        //Intent Bridge
+        intent.putExtra("BridgeName", bridge.getName());
+        intent.putExtra("BridgeIp", bridge.getIp());
+        intent.putExtra("BridgeToken", bridge.getToken());
+
+        //Intent Hue
+        intent.putExtra("HueId", hue.getId());
+        intent.putExtra("HueName", hue.getName());
+        intent.putExtra("HueOn", hue.getOn());
+        intent.putExtra("HueHue", hue.getHue());
+        intent.putExtra("HueSaturation", hue.getSaturation());
+        intent.putExtra("HueBrightness", hue.getBrightness());
+        intent.putExtra("HueEffect", hue.getEffect());
+        intent.putExtra("HueAlert", hue.getAlert());
+
+        startActivity(intent);
+    }
+
+    public void onResume(){
+        super.onResume();
+        getHuesWithVolley();
+    }
+
+    @Override
+    public void lightOnCallback() {
+        allSwitch.setOnCheckedChangeListener(null);
+        allSwitch.setChecked(true);
+        setAllSwitchListener();
+    }
+
+    @Override
+    public void lightOffCallback(){
+        Boolean allOff = true;
+        for (Hue hue : hueList) {
+            if(hue.getOn()){
+                allOff = false;
+            }
+        }
+        if(allOff){
+            allSwitch.setOnCheckedChangeListener(null);
+            allSwitch.setChecked(false);
+            setAllSwitchListener();
+        }
     }
 }

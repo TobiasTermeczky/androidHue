@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".HueActivity" />
+        <activity android:name=".HueDetailActivity" />
     </application>
 
 </manifest>

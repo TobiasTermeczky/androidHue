@@ -3,4 +3,10 @@
     <string name="name">name</string>
     <string name="ip">ip</string>
     <string name="all_lights">Control all the lights</string>
+    <string name="disco">Disco</string>
+    <string name="set_colorloop">Set colorloop</string>
+    <string name="set_alert">Set alert</string>
+    <string name="set_brightness">Set brightness</string>
+    <string name="set_saturation">Set saturation</string>
+    <string name="set_hue">Set hue</string>
 </resources>
