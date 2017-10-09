@@ -53,7 +53,7 @@ public class HueActivity extends AppCompatActivity implements AdapterView.OnItem
         hueSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //// TODO: 9-10-2017 hier zit nog een bug als ie aan is en je zet master aan gaat de lamp uit!
+                // TODO: 9-10-2017 hier zit nog een bug als ie aan is en je zet master aan gaat de lamp uit!
                 for (Hue hue : hueList) {
                     if (b) {
                         volleyHelper.turnOn(bridge, hue);
