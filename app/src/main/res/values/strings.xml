@@ -2,5 +2,5 @@
     <string name="app_name">Hue Control</string>
     <string name="name">name</string>
     <string name="ip">ip</string>
-    <string name="on_off">On/Off</string>
+    <string name="all_lights">Control all the lights</string>
 </resources>

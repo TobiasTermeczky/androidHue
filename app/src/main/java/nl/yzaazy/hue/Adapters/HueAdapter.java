@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.yzaazy.hue.Helper.VolleyHelper;
+import nl.yzaazy.hue.Models.Bridge;
 import nl.yzaazy.hue.Models.Hue;
 import nl.yzaazy.hue.R;
 
@@ -18,11 +20,15 @@ public class HueAdapter extends BaseAdapter{
     Context context;
     LayoutInflater inflater;
     ArrayList<Hue> hueList;
+    Bridge bridge;
+    private VolleyHelper volleyHelper;
 
-    public HueAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Hue> hueList){
+    public HueAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Hue> hueList, Bridge bridge){
         this.context = context;
         this.inflater = layoutInflater;
         this.hueList = hueList;
+        this.bridge = bridge;
+        volleyHelper = new VolleyHelper(context);
     }
 
     @Override
@@ -55,16 +61,17 @@ public class HueAdapter extends BaseAdapter{
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Hue hue = hueList.get(i);
+        final Hue hue = hueList.get(i);
         viewHolder.name.setText(hue.getName());
+        viewHolder.onOffSwitch.setChecked(hue.getOn());
         viewHolder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if(b){
-//                    hue.turnOff();
-//                }else {
-//                    hue.turnOn();
-//                }
+                if(b){
+                    volleyHelper.turnOn(bridge, hue);
+                }else {
+                    volleyHelper.turnOff(bridge, hue);
+                }
             }
         });
         return view;
