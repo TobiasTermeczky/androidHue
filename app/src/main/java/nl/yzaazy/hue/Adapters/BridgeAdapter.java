@@ -15,22 +15,22 @@ import nl.yzaazy.hue.R;
 public class BridgeAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
-    ArrayList<Bridge> mBridgeArrayList;
+    ArrayList<Bridge> bridgeList;
 
-    public BridgeAdapter(Context context, LayoutInflater inflater, ArrayList<Bridge> mBridgeArrayList){
+    public BridgeAdapter(Context context, LayoutInflater inflater, ArrayList<Bridge> bridgeList){
         this.context = context;
         this.inflater = inflater;
-        this.mBridgeArrayList = mBridgeArrayList;
+        this.bridgeList = bridgeList;
     }
 
     @Override
     public int getCount() {
-        return mBridgeArrayList.size();
+        return bridgeList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mBridgeArrayList.get(i);
+        return bridgeList.get(i);
     }
 
     @Override
@@ -46,15 +46,15 @@ public class BridgeAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.bridge_row, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.name = view.findViewById(R.id.tvName);
-            viewHolder.ip = view.findViewById(R.id.tvIP);
+            viewHolder.name = view.findViewById(R.id.tvBridgeName);
+            viewHolder.ip = view.findViewById(R.id.tvBridgeIP);
 
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Bridge bridge = mBridgeArrayList.get(i);
+        Bridge bridge = bridgeList.get(i);
         viewHolder.name.setText(bridge.getName());
         viewHolder.ip.setText(bridge.getIp());
         return view;

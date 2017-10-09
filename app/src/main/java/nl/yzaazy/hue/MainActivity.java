@@ -23,9 +23,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        bridgeList.add(new Bridge("LA134", "http://192.168.1.179/api/", "M4MLKGnNIs-FIcksCcAGGGt-Kjb3hXpEkMUFEIco"));
-        bridgeList.add(new Bridge("Avans Aula LA", "http://145.48.205.33/api/", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"));
+        setContentView(R.layout.bridge_main);
+        bridgeList.add(new Bridge("LA134", "http://192.168.1.179", "M4MLKGnNIs-FIcksCcAGGGt-Kjb3hXpEkMUFEIco"));
+        bridgeList.add(new Bridge("Avans Aula LA", "http://145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"));
+        bridgeList.add(new Bridge("Emulator", "http://192.168.1.225","newdeveloper"));
         bridgeListView = (ListView) findViewById(R.id.lvBridge);
         adapter = new BridgeAdapter(getApplicationContext(), LayoutInflater.from(getApplicationContext()), bridgeList);
         bridgeListView.setAdapter(adapter);

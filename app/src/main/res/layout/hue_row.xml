@@ -7,23 +7,25 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tvBridgeName"
+        android:id="@+id/tvHueName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="8dp"
         android:text="@string/name"
+        android:textAlignment="viewStart"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp" />
 
-    <TextView
-        android:id="@+id/tvBridgeIP"
-        android:layout_width="0dp"
+    <Switch
+        android:id="@+id/onOffSwitch"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:text="@string/on_off"
+        app:layout_constraintTop_toTopOf="@+id/tvHueName"
         android:layout_marginTop="0dp"
-        android:text="@string/ip"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBridgeName" />
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
