@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         bridgeList.add(new Bridge("Avans Aula LA", "http://145.48.205.33", "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB"));
         bridgeList.add(new Bridge("Emulator", "http://192.168.1.225", "newdeveloper"));
         bridgeList.add(new Bridge("Girlfriend-Home", "http://192.168.2.96", "newdeveloper"));
+        bridgeList.add(new Bridge("Home", "http://192.168.1.27", "newdeveloper"));
         bridgeListView = (ListView) findViewById(R.id.lvBridge);
         adapter = new BridgeAdapter(getApplicationContext(), LayoutInflater.from(getApplicationContext()), bridgeList);
         bridgeListView.setAdapter(adapter);

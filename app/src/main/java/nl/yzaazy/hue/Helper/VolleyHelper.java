@@ -103,17 +103,17 @@ public class VolleyHelper {
     }
 
     public void setHue(Bridge bridge, Hue hue, int i) {
-        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"hue\":\"" + i + "\"}", Request.Method.PUT);
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"hue\":" + i + "}", Request.Method.PUT);
         hue.setHue(i);
     }
 
     public void setSaturation(Bridge bridge, Hue hue, int i) {
-        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"sat\":\"" + i + "\"}", Request.Method.PUT);
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"sat\":" + i + "}", Request.Method.PUT);
         hue.setSaturation(i);
     }
 
     public void setBrightness(Bridge bridge, Hue hue, int i) {
-        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"bri\":\"" + i + "\"}", Request.Method.PUT);
+        this.doRequest(bridge.getIp() + "/api/" + bridge.getToken() + "/lights/" + hue.getId() + "/state/", "{\"bri\":" + i + "}", Request.Method.PUT);
         hue.setHue(i);
     }
 }
