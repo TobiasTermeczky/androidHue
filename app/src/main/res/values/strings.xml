@@ -9,4 +9,5 @@
     <string name="set_brightness">Set brightness</string>
     <string name="set_saturation">Set saturation</string>
     <string name="set_hue">Set hue</string>
+    <string name="color_of_the_lamp">Color of the lamp</string>
 </resources>

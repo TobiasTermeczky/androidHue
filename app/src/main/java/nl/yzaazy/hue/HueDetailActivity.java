@@ -1,5 +1,7 @@
 package nl.yzaazy.hue;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
@@ -14,11 +16,13 @@ import nl.yzaazy.hue.Models.Hue;
 public class HueDetailActivity extends AppCompatActivity {
 
     TextView name;
+    TextView displayColor;
     Switch switchOnOff, switchAlert, switchColorloop;
     SeekBar seekBarHue, seekBarSaturation, seekBarBrightness;
     private VolleyHelper volleyHelper;
     private Hue hue;
     private Bridge bridge;
+    private GradientDrawable drawableColor;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,9 @@ public class HueDetailActivity extends AppCompatActivity {
         seekBarBrightness = (SeekBar) findViewById(R.id.seekBarBrightness);
         switchAlert = (Switch) findViewById(R.id.switchDetailAlert);
         switchColorloop = (Switch) findViewById(R.id.switchDetailColorloop);
+        displayColor = (TextView) findViewById(R.id.displayColor);
+        displayColor.setBackgroundResource(R.drawable.round);
+        drawableColor = (GradientDrawable) displayColor.getBackground();
 
         name.setText(hue.getName());
         switchOnOff.setChecked(hue.getOn());
@@ -54,6 +61,12 @@ public class HueDetailActivity extends AppCompatActivity {
         seekBarBrightness.setProgress(hue.getBrightness());
         switchAlert.setChecked(hue.getAlert().equals("lselect"));
         switchColorloop.setChecked(hue.getEffect().equals("colorloop"));
+
+        float[] hsvColor = {0, 1, 1};
+        hsvColor[0] = 360f * seekBarHue.getProgress() / seekBarHue.getMax();
+        hsvColor[1] = 1f * seekBarSaturation.getProgress() / seekBarSaturation.getMax();
+        hsvColor[2] = 1f * seekBarBrightness.getProgress() / seekBarBrightness.getMax();
+        drawableColor.setColor(Color.HSVToColor(hsvColor));
 
         setSwitchListeners();
         setSeekBarListeners();
@@ -87,10 +100,14 @@ public class HueDetailActivity extends AppCompatActivity {
     }
 
     private void setSeekBarListeners() {
-        seekBarHue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                volleyHelper.setHue(bridge, hue, i);
+                float[] hsvColor = {0, 1, 1};
+                hsvColor[0] = 360f * seekBarHue.getProgress() / seekBarHue.getMax();
+                hsvColor[1] = 1f * seekBarSaturation.getProgress() / seekBarSaturation.getMax();
+                hsvColor[2] = 1f * seekBarBrightness.getProgress() / seekBarBrightness.getMax();
+                drawableColor.setColor(Color.HSVToColor(hsvColor));
             }
 
             @Override
@@ -100,42 +117,13 @@ public class HueDetailActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                volleyHelper.setHue(bridge, hue, seekBar.getProgress());
+                volleyHelper.setSaturation(bridge, hue, seekBar.getProgress());
+                volleyHelper.setBrightness(bridge, hue, seekBar.getProgress());
             }
-        });
-
-        seekBarSaturation.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                volleyHelper.setSaturation(bridge, hue, i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        seekBarBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                volleyHelper.setBrightness(bridge, hue, i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        };
+        seekBarHue.setOnSeekBarChangeListener(listener);
+        seekBarSaturation.setOnSeekBarChangeListener(listener);
+        seekBarBrightness.setOnSeekBarChangeListener(listener);
     }
 }
